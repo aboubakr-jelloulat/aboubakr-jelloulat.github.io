@@ -531,7 +531,229 @@ test4 :
 
 ## **Intermediate Concepts**
 
-*This section will be expanded in future updates...*
+### **01 - Create Object Directory**
+
+#### **Why Do We Need Object Directory?**
+
+**Object files (.o) are like LEGO blocks for your program:**
+- **Separate Compilation**: Each .cpp file compiles into its own .o file independently
+- **Faster Builds**: If you change ONE file, only THAT file gets recompiled (not everything!)
+- **Organization**: Keeps your source directory clean by putting build artifacts in a separate folder
+- **Linking**: All .o files get "glued together" at the end to create your final program
+
+**Example:**
+- You have: `main.cpp`, `utils.cpp`, `math.cpp` 
+- You change ONLY `utils.cpp`
+- **Without object files**: All 3 files get recompiled (slow!)
+- **With object files**: Only `utils.o` gets rebuilt, then linked with existing `main.o` and `math.o` (fast!)
+
+
+---
+
+```makefile
+NAME    := zombie
+CC      := c++
+CFLAGS  := -Wall -Wextra -Werror -std=c++98
+
+# The folder where we keep our source files.
+# Here "." means the current folder (where the Makefile is).
+SRCDIR := .
+
+# The folder where we want to put the compiled object files (.o).
+OBJDIR := build
+
+# SRCS will contain all the .cpp files inside SRCDIR.
+# wildcard is a function that finds all files matching a pattern.
+# Example: ./main.cpp ./shared.cpp 
+SRCS := $(wildcard $(SRCDIR)/*.cpp)
+
+# OBJS is the list of object files (.o) created from SRCS.
+# The pattern replaces "./name.cpp" with "obj/name.o".
+# Example: obj/main.o obj/shared.o 
+OBJS := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+
+# The default target. When we type "make", it will build $(NAME).
+all: $(NAME)
+
+# Rule to build the final program from the object files.
+# This links all .o files together into the executable "zombie".
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+# Rule to compile each .cpp into a .o file.
+# $< means the first dependency (the .cpp file).
+# $@ means the target (the .o file).
+# Example: c++ -Wall -Wextra -Werror -std=c++98 -c ./main.cpp -o obj/main.o
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp utils.h | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# This creates the obj/ folder if it does not exist.
+# Without this, the first build would fail when trying to put files in obj/.
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
+
+# "make clean" will remove the obj/ folder and all .o files.
+clean:
+	@rm -rf $(OBJDIR)
+
+# "make fclean" will do clean AND also remove the final program.
+fclean: clean
+	@rm -f $(NAME)
+
+# "make re" will do a full rebuild: clean everything then build again.
+re: fclean all
+
+# These are phony targets, not files.
+# Without this line, if a file named "clean" exists in the folder,
+# then "make clean" could do nothing by mistake.
+.PHONY: all clean fclean re
+```
+
+### **02 - Generic Makefile - Dependency Handling**
+
+#### **Why Do We Need Dependency Handling?**
+
+**Imagine this scenario:**
+You have a header file `weapon.h` that contains important function declarations. Your `main.cpp` includes this header. You modify `weapon.h` by adding a new function or changing an existing one.
+
+**WITHOUT proper dependency handling:**
+- You run `make`
+- Make sees that `main.o` exists and is newer than `main.cpp`
+- Make thinks: "Nothing to do here!" and skips compilation
+- Your program still uses the OLD version of the header
+- **Result: Your changes are IGNORED and bugs appear!**
+
+**WITH proper dependency handling:**
+- Make knows that `main.o` depends on BOTH `main.cpp` AND `weapon.h`
+- When `weapon.h` changes, Make automatically recompiles `main.o`
+- Your program always uses the LATEST version of everything
+- **Result: Everything works as expected!**
+
+*For more details on this critical issue, check out [this Stack Overflow discussion](https://stackoverflow.com/questions/52034997/how-to-make-makefile-recompile-when-a-header-file-is-changed/52036564#52036564)*
+
+---
+
+```makefile
+NAME := violence
+CXX := c++
+CXXFLAGS := -Wall -Wextra -Werror -std=c++98
+
+# OPTIONAL BUILD FLAGS (FEATURE TOGGLES)
+# These allow you to enable features by setting environment variables
+# Usage: make FEATURE=1
+
+# Optimize for speed: make O3=1
+# -Ofast: Maximum optimization (can be aggressive)
+ifdef O3
+	CXXFLAGS += -Ofast
+endif
+
+# Add debug symbols: make DEBUG=1
+# -g3: Maximum debug information (for gdb debugging)
+ifdef DEBUG
+	CXXFLAGS += -g3
+endif
+
+# Enable AddressSanitizer: make SAN=1
+# -fsanitize=address: Detects memory errors at runtime
+# Examples of what it catches:
+# - Buffer overflows: accessing array beyond its size
+# - Use-after-free: using memory after it's freed
+# - Memory leaks: forgetting to free allocated memory
+# - Stack overflow: excessive stack usage
+ifdef SAN
+	CXXFLAGS += -fsanitize=address
+endif
+
+# Find all .cpp files in the current directory automatically
+# Example: if current dir has main.cpp, HumanA.cpp, HumanB.cpp
+# then SRCS becomes main.cpp HumanA.cpp HumanB.cpp
+SRCS := $(wildcard *.cpp)
+
+# Directory where object files will be stored (keeps source directory clean)
+OBJDIR := obj
+
+# Convert .cpp files to .o files in the obj directory
+# This does several transformations:
+# 1. $(SRCS:.cpp=.o): Change .cpp extension to .o → main.cpp becomes main.o
+# 2. $(notdir ...): Remove directory path → main.o becomes main.o (no change for current dir)
+# 3. $(addprefix $(OBJDIR)/, ...): Add obj/ prefix → main.o becomes obj/main.o
+#
+# Example transformation:
+# main.cpp → obj/main.o
+# HumanA.cpp → obj/HumanA.o
+# HumanB.cpp → obj/HumanB.o
+OBJFILES := $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.cpp=.o)))
+
+.PHONY: all clean 
+
+all: $(NAME)
+
+# Main target: links all object files into final executable
+$(NAME): $(OBJFILES)
+	@$(CXX) $(CXXFLAGS) $(OBJFILES) -o $(NAME)
+	@echo Created executable \'$(NAME)\'
+
+clean:
+	@$(RM) -rf $(OBJDIR)
+	@echo Deleted \'obj/\'
+
+fclean: clean
+	@$(RM) -f $(NAME)
+	@echo Deleted executable \'$(NAME)\'
+
+# Rebuild
+re: fclean all
+
+# DEPENDENCY HANDLING (ADVANCED BUT ESSENTIAL)
+# Generate .d dependency files from .o files
+# patsubst pattern: %.o → %.d
+# Example: obj/main.o → obj/main.d
+DEPENDS := $(patsubst %.o,%.d,$(OBJFILES))
+
+# Include all dependency files if they exist
+# The dash (-) means "don't error if files don't exist"
+# This ensures Make knows about header file dependencies
+-include $(DEPENDS)
+
+# Rule to compile .cpp files into .o files
+$(OBJDIR)/%.o : %.cpp Makefile
+# Create output directory if it doesn't exist
+	@mkdir -p $(@D)
+# Call the tidy_compilation function with the compile command
+# The command includes:
+# -MMD: Generate dependency files (.d)
+# -MP: Add phony targets for headers (prevents errors if headers are deleted)
+# -c: Compile only (don't link)
+# $<: Input file (the .cpp file)
+# -o $@: Output file (the .o file)
+	@$(call tidy_compilation,$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@)
+
+# TIDY COMPILATION FUNCTION
+# Custom function to display clean compilation messages
+define tidy_compilation
+	@printf "%s\e[K\n" "$(1)"
+	# Execute the actual compilation command (passed as $1)
+	@$(1)
+	# Use ANSI escape codes to clear the previous line
+	# \e[A: Move cursor up one line
+	# \e[K: Clear the entire line
+	# This creates clean output without showing the long compiler command
+	@printf "\e[A\e[K"
+endef
+
+# USAGE EXAMPLES:
+# make              → Normal build
+# make DEBUG=1      → Build with debug symbols
+# make O3=1         → Build with maximum optimization  
+# make SAN=1        → Build with memory error detection
+# make clean        → Remove object files
+# make fclean       → Remove everything
+# make re           → Rebuild from scratch
+# make re SAN=1     → Clean rebuild with sanitizer
+# Combined flags example:
+# make DEBUG=1 SAN=1 → Debug build with memory checking
+```
 
 ---
 
