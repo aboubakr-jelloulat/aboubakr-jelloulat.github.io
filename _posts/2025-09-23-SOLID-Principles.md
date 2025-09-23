@@ -15,11 +15,8 @@ toc: true
 1. [**Introduction**](#introduction)
 2. [**What are SOLID Principles?**](#what-are-solid-principles)
 3. [**Single Responsibility Principle (SRP)**](#single-responsibility-principle-srp)
-<!-- 4. [**Open/Closed Principle (OCP)**](#openclosed-principle-ocp)
-5. [**Liskov Substitution Principle (LSP)**](#liskov-substitution-principle-lsp)
-6. [**Interface Segregation Principle (ISP)**](#interface-segregation-principle-isp)
-7. [**Dependency Inversion Principle (DIP)**](#dependency-inversion-principle-dip)
-8. [**Conclusion**](#conclusion) -->
+4. [**Open/Closed Principle (OCP)**](#openclosed-principle-ocp)
+
 
 ---
 
