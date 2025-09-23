@@ -70,7 +70,7 @@ These principles aren't just theoretical concepts  they're practical tools that 
 
 Let's look at a common violation of SRP  a class that handles both user data and email notifications:
 
-!["Violating SRP Example"](assets/img/carbon.png)
+!["Violating SRP Example"](/assets/img/carbon.png)
 
 
 #### Problems with this approach 
@@ -88,7 +88,7 @@ Here's how we can refactor this to follow SRP:
 
 
 
-!["Following SRP Example"](assets/img/solutionsSRP.png)
+!["Following SRP Example"](/assets/img/solutionsSRP.png)
 
 
 #### SRP Benefits and Architecture
