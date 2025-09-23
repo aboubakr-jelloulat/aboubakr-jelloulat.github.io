@@ -72,6 +72,7 @@ Let's look at a common violation of SRP  a class that handles both user data and
 
 !["Violating SRP Example"](assets/img/carbon.png)
 
+
 #### Problems with this approach 
 
 - **_Changes to email logic require modifying UserManager_**
