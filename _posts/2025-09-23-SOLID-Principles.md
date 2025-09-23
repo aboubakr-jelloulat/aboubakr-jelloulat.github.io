@@ -80,7 +80,6 @@ Let's look at a common violation of SRP  a class that handles both user data and
 - **_The class becomes harder to test and maintain_**
 
 
-
 ### Example: Following SRP
 
 
@@ -88,7 +87,7 @@ Here's how we can refactor this to follow SRP:
 
 
 
-!["Following SRP Example"](/assets/img/solutionsSRP.png)
+!["Following SRP Example"](/assets/img/solutionsSRP.png) 
 
 
 #### SRP Benefits and Architecture
