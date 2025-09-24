@@ -22,9 +22,9 @@ toc: true
 
 ## **Introduction**
 
-Have you ever looked at a piece of code and thought, "This is a mess"? We've all been there. Code that's hard to read, difficult to modify, and breaks whenever you touch it. The good news is that there's a way to avoid this nightmare – and it starts with understanding the SOLID principles.
+Have you ever looked at a piece of code and thought, "This is a mess"? We've all been there. Code that's hard to read, difficult to modify, and breaks whenever you touch it. The good news is that there's a way to avoid this nightmare  and it starts with understanding the SOLID principles.
 
-In this comprehensive guide, we'll explore one of the most fundamental concepts in software engineering. Keep in mind that no single tutorial can make you an expert—you need consistent practice. This tutorial is meant to introduce you to the basic concepts. Also, be aware that there might be mistakes, so use it as a starting point rather than a definitive guide.
+In this comprehensive guide, we'll explore one of the most fundamental concepts in software engineering. Keep in mind that no single tutorial can make you an expert you need consistent practice. This tutorial is meant to introduce you to the basic concepts. Also, be aware that there might be mistakes, so use it as a starting point rather than a definitive guide.
 
 
 ---
@@ -153,4 +153,57 @@ This refactored design embodies the essence of clean architecture and OCP:
 
 - **_Extensibility: New shapes can be added without touching existing codes_**
 
+
+
+
 ---
+
+
+## Liskov Substitution Principle (LSP)
+
+### Core Concept
+**you should be able to use any derived class instead of a parent class and have it behave in the same manner without modification.**
+
+
+>The Liskov Substitution Principle, named after Barbara Liskov, is perhaps the most misunderstood of the SOLID principles. At its essence, LSP states that you should be able to use any derived class instead of a parent class and have it behave in the same manner without modification. It ensures that a derived class does not affect the behavior of the parent class in other words, a derived class must be substitutable for its base class.
+
+
+>Think of it this way: if you have a function that works with a base class, it should work equally well with any of its subclasses without knowing which specific subclass it's dealing with. As Robert C. Martin explains in "Clean Architecture," this principle is what makes inheritance truly powerful and safe. When LSP is violated, you end up with fragile code that requires constant type checking and conditional logic.
+
+
+### Example: Violating LSP
+
+Let's look at a game engine where different character types have different capabilities:
+
+!["Violating LSPP Example"](/assets/img/ViolatingLSP.png)
+
+
+#### Problems with this approach
+
+- **_Ghost throws exception for Jump(), breaking substitutability_**
+- **_Client code must know specific types to avoid calling Jump() on ghosts_**
+- **_Violates LSP because you can't safely replace PlayerCharacter with Ghost_**
+- **_Forces meaningless or error-prone implementations in subclasses_**
+
+
+
+### Example: Following LSP
+
+Here's how we can refactor this design to follow LSP using proper interfaces:
+
+!["Following LSP Example"](/assets/img/FollowingLSP.png)
+
+
+#### LSP Benefits and Architecture
+
+This refactored design perfectly demonstrates clean architecture and LSP compliance:
+
+- **_PlayerCharacter (Base Class): Contains only behavior that ALL characters share_**
+
+- **_ICanJump Interface: Segregates jumping capability to only characters that can jump_**
+
+- **_Warrior: Implements both character movement and jumping capability_**
+
+- **_Ghost: Implements only character movement, staying true to its ethereal nature_**
+
+- **_Substitutability: Any PlayerCharacter can be used interchangeably without breaking client code_**
