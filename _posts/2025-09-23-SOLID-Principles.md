@@ -108,4 +108,49 @@ Each class now has a single, well defined responsibility and can evolve independ
 ## Open/Closed Principle (OCP)
 
 
-- **_##Redda o ihen Rebi ##_**
+### Core Concept
+
+**Software entities should be open for extension but closed for modification.**
+
+>The Open/Closed Principle, as articulated by Robert C. Martin in "Clean Architecture," represents one of the most powerful concepts in software design. This principle states that you should be able to extend a class's behavior without modifying its source code. In essence, your code should be open for extension but closed for modification.
+
+>The genius of OCP lies in its ability to protect existing, working code from changes while still allowing new functionality to be added. As Uncle Bob emphasizes, this principle is the heart of object-oriented design it's what makes code flexible, reusable, and maintainable. When properly applied, OCP allows systems to be easily extended with new functionality without risking the stability of existing features.
+
+### Example: Violating OCP
+
+Let's examine a common violation of OCP a class that handles different notification types using conditional statements:
+
+!["Violating OCP"](/assets/img/OCPViolatingOCP.png) 
+
+
+#### Problems with this approach
+
+- **_Adding new notification types requires modifying the NotificationService classs_**
+
+- **_Risk of breaking existing functionality when adding new featuress_**
+
+- **_Violates the principle that classes should be closed for modifications_**
+
+- **_Testing becomes more complex as the class growss_**
+
+### Example: Following OCP
+
+Here's how we can refactor this design to follow OCP using interfaces:
+
+
+!["Following OCP"](/assets/img/FollowingOCP.png) 
+
+
+#### OCP Benefits and Architecture
+
+This refactored design embodies the essence of clean architecture and OCP:
+
+- **_Shape (Abstract Interface): Defines the contract that all shapes must follows_**
+
+- **_Concrete Shape Classes: Each encapsulates its own area calculation logics_**
+
+- **_AreaCalculator: Depends on the abstraction, not concrete implementationss_**
+
+- **_Extensibility: New shapes can be added without touching existing codes_**
+
+---
