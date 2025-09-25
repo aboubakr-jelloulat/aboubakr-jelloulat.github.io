@@ -51,7 +51,7 @@ These principles aren't just theoretical concepts  they're practical tools that 
 ---
 
 
-## Single Responsibility Principle (SRP)
+## **S** : Single Responsibility Principle (SRP)
 
 ### Core Concept
 
@@ -105,7 +105,7 @@ Each class now has a single, well defined responsibility and can evolve independ
 ---
 
 
-## Open/Closed Principle (OCP)
+## **O** : Open/Closed Principle (OCP)
 
 
 ### Core Concept
@@ -159,7 +159,7 @@ This refactored design embodies the essence of clean architecture and OCP:
 ---
 
 
-## Liskov Substitution Principle (LSP)
+## **L** : Liskov Substitution Principle (LSP)
 
 ### Core Concept
 **you should be able to use any derived class instead of a parent class and have it behave in the same manner without modification.**
@@ -175,7 +175,7 @@ This refactored design embodies the essence of clean architecture and OCP:
 
 Let's look at a game engine where different character types have different capabilities:
 
-!["Violating LSPP Example"](/assets/img/ViolatingLSP.png)
+!["Violating LSP Example"](/assets/img/ViolatingLSP.png)
 
 
 #### Problems with this approach
@@ -207,3 +207,69 @@ This refactored design perfectly demonstrates clean architecture and LSP complia
 - **_Ghost: Implements only character movement, staying true to its ethereal nature_**
 
 - **_Substitutability: Any PlayerCharacter can be used interchangeably without breaking client code_**
+
+---- 
+
+## **I** : Interface Segregation Principle (ISP)
+
+
+### Core Concept
+
+**that clients should not be forced to implement interfaces they don't use. Instead of one fat interface, many small interfaces are preferred based on groups of methods, each serving one submodule**
+
+>The Interface Segregation Principle, as emphasized by Robert C. Martin in "Clean Architecture," states that no client should be forced to depend on methods it does not use. This principle deals with the disadvantages of implementing large interfaces. When we force a class to implement an interface with methods it doesn't need, we create unnecessary coupling and violate the principle of separation of concerns.
+
+
+>ISP teaches us to break down large, monolithic interfaces into smaller, more focused ones. This way, implementing classes only need to be concerned with the methods that are relevant to them. As Uncle Bob explains, this principle helps us avoid the problem of "fat interfaces" that bundle together methods that serve different clients or use cases.
+
+### Real World Analogy
+
+
+
+>Imagine a restaurant menu where all the food and drink options are cramped onto one overwhelming page. It includes breakfast items, lunch specials, dinner entrees, snacks, desserts, cocktails, and coffee drinks all mixed together in one chaotic list.
+
+>If you're a customer who just wants breakfast, you'd have to wade through dozens of irrelevant dinner options, cocktail recipes, and dessert descriptions just to find the pancakes and eggs. It's frustrating, time consuming, and overwhelming.
+
+>**_Now imagine the same restaurant with a thoughtfully organized menu system: separate, focused menus for breakfast, lunch, dinner, beverages, and desserts. When you sit down for breakfast, you receive only the breakfast menu clean, relevant, and easy to navigate. You see exactly what you need, nothing more, nothing less._**
+
+>In software development, ISP works exactly like this well-organized restaurant. Instead of forcing clients to deal with one massive interface containing every possible method (like that overwhelming single page menu), we create smaller, focused interfaces that serve specific needs. Each client interacts only with the functionality that's relevant to them, making the code cleaner, more maintainable, and easier to understand.
+
+
+### Example: Violating ISP
+
+Let's examine a violation of ISP with Amazon's payment system that forces all payment methods to implement every possible payment type:
+
+!["Violating ISP Example"](/assets/img/ViolatingISP.png)
+
+
+#### Problems with this approach
+
+- **_AmazonCheckout is forced to implement Bitcoin payment it doesn't support_**
+- **_LocalCoffeeShop must implement multiple payment methods it can't handle_**
+- **_Client code must handle exceptions for unsupported payment methods_**
+- **_Interface becomes bloated with methods irrelevant to specific implementations_**
+
+
+### Example: Following ISP
+
+Here's how we can refactor Amazon's payment system to follow ISP using segregated payment interfaces:
+
+
+!["Following ISP Example"](/assets/img/FollowingISP.png)
+
+
+
+#### ISP Benefits and Architecture
+
+This refactored design demonstrates clean architecture and ISP compliance:
+
+- **_Focused Interfaces: Each interface serves a single, well-defined purpose without unnecessary bloat_**
+
+- **_Selective Implementation: Classes implement only the interfaces they actually need and can meaningfully support_**
+
+- **_Reduced Coupling: Client code depends only on specific functionality, not entire fat interfaces_**
+
+- **_Enhanced Maintainability: Changes to one interface don't affect unrelated implementations_**
+
+- **_Improved Testability: Smaller, focused interfaces are easier to mock and test in isolation_**
+
