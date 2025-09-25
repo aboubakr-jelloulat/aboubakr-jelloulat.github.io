@@ -51,7 +51,7 @@ These principles aren't just theoretical concepts  they're practical tools that 
 ---
 
 
-## **S** : Single Responsibility Principle (SRP)
+## Single Responsibility Principle (SRP)
 
 ### Core Concept
 
@@ -105,7 +105,7 @@ Each class now has a single, well defined responsibility and can evolve independ
 ---
 
 
-## **O** : Open/Closed Principle (OCP)
+## Open/Closed Principle (OCP)
 
 
 ### Core Concept
@@ -159,7 +159,7 @@ This refactored design embodies the essence of clean architecture and OCP:
 ---
 
 
-## **L** : Liskov Substitution Principle (LSP)
+## Liskov Substitution Principle (LSP)
 
 ### Core Concept
 **you should be able to use any derived class instead of a parent class and have it behave in the same manner without modification.**
@@ -210,7 +210,7 @@ This refactored design perfectly demonstrates clean architecture and LSP complia
 
 ---- 
 
-## **I** : Interface Segregation Principle (ISP)
+## Interface Segregation Principle (ISP)
 
 
 ### Core Concept
@@ -272,4 +272,3 @@ This refactored design demonstrates clean architecture and ISP compliance:
 - **_Enhanced Maintainability: Changes to one interface don't affect unrelated implementations_**
 
 - **_Improved Testability: Smaller, focused interfaces are easier to mock and test in isolation_**
-
