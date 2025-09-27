@@ -14,12 +14,13 @@ toc: true
 
 1. [**Introduction**](#introduction)
 2. [**What are SOLID Principles?**](#what-are-solid-principles)
-3. [** *S* : Single Responsibility Principle (SRP)**](#s-single-responsibility-principle-srp)
-4. [** *O* : Open/Closed Principle (OCP)**](#openclosed-principle-ocp)
-5. [** *L* : Liskov Substitution Principle (LSP)**](#liskov-substitution-principle-lsp)
-6. [** *I* : Interface Segregation Principle (ISP)**](#interface-segregation-principle-isp)
-7. [** *D* : Dependency Inversion Principle (DIP)**](#dependency-inversion-principle-dip)
+3. [**S : Single Responsibility Principle (SRP)**](#s-single-responsibility-principle-srp)
+4. [**O : Open/Closed Principle (OCP)**](#o-openclosed-principle-ocp)
+5. [**L : Liskov Substitution Principle (LSP)**](#l-liskov-substitution-principle-lsp)
+6. [**I : Interface Segregation Principle (ISP)**](#i-interface-segregation-principle-isp)
+7. [**D : Dependency Inversion Principle (DIP)**](#d-dependency-inversion-principle-dip)
 8. [**Conclusion**](#conclusion)
+
 
 ---
 
@@ -113,6 +114,7 @@ Each class now has a single, well defined responsibility and can evolve independ
 
 
 ## **O**: Open/Closed Principle (OCP)
+
 
 <img src="/assets/img/O.memes.png" alt="memes" width="400">
 
@@ -220,7 +222,9 @@ This refactored design perfectly demonstrates clean architecture and LSP complia
 
 ---- 
 
+
 ## **I**: Interface Segregation Principle (ISP)
+
 
 <img src="/assets/img/I.memes.png" alt="memes" width="400">
 
