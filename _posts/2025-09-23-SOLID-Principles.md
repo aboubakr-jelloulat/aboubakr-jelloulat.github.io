@@ -14,9 +14,12 @@ toc: true
 
 1. [**Introduction**](#introduction)
 2. [**What are SOLID Principles?**](#what-are-solid-principles)
-3. [**Single Responsibility Principle (SRP)**](#single-responsibility-principle-srp)
-4. [**Open/Closed Principle (OCP)**](#openclosed-principle-ocp)
-
+3. [** *S* : Single Responsibility Principle (SRP)**](#s-single-responsibility-principle-srp)
+4. [** *O* : Open/Closed Principle (OCP)**](#openclosed-principle-ocp)
+5. [** *L* : Liskov Substitution Principle (LSP)**](#liskov-substitution-principle-lsp)
+6. [** *I* : Interface Segregation Principle (ISP)**](#interface-segregation-principle-isp)
+7. [** *D* : Dependency Inversion Principle (DIP)**](#dependency-inversion-principle-dip)
+8. [**Conclusion**](#conclusion)
 
 ---
 
@@ -51,7 +54,11 @@ These principles aren't just theoretical concepts  they're practical tools that 
 ---
 
 
-## Single Responsibility Principle (SRP)
+## **S**: Single Responsibility Principle (SRP)
+
+
+<img src="/assets/img/S.memes.png" alt="memes" width="400">
+
 
 ### Core Concept
 
@@ -105,8 +112,9 @@ Each class now has a single, well defined responsibility and can evolve independ
 ---
 
 
-## Open/Closed Principle (OCP)
+## **O**: Open/Closed Principle (OCP)
 
+<img src="/assets/img/O.memes.png" alt="memes" width="400">
 
 ### Core Concept
 
@@ -159,7 +167,9 @@ This refactored design embodies the essence of clean architecture and OCP:
 ---
 
 
-## Liskov Substitution Principle (LSP)
+## **L**: Liskov Substitution Principle (LSP)
+
+<img src="/assets/img/L.memes.png" alt="memes" width="400">
 
 ### Core Concept
 **you should be able to use any derived class instead of a parent class and have it behave in the same manner without modification.**
@@ -210,8 +220,9 @@ This refactored design perfectly demonstrates clean architecture and LSP complia
 
 ---- 
 
-## Interface Segregation Principle (ISP)
+## **I**: Interface Segregation Principle (ISP)
 
+<img src="/assets/img/I.memes.png" alt="memes" width="400">
 
 ### Core Concept
 
@@ -272,3 +283,74 @@ This refactored design demonstrates clean architecture and ISP compliance:
 - **_Enhanced Maintainability: Changes to one interface don't affect unrelated implementations_**
 
 - **_Improved Testability: Smaller, focused interfaces are easier to mock and test in isolation_**
+
+
+----
+
+## **D**: Dependency Inversion Principle (DIP)
+
+<img src="/assets/img/D.memes.png" alt="memes" width="400">
+
+### Core Concept
+
+**The Dependency Inversion Principle (DIP) states that high level modules should not depend on low level modules. Both should depend on abstractions. Abstractions should not depend on details, and details should depend on abstractions.** 
+
+>This principle promotes loose coupling between components, making the system easier to change and maintain. It also enhances testability by allowing easier mock or stub replacements for dependencies.
+
+### Real World Analogy
+
+>Think about charging your devices. You have a phone, headphones, power bank, and tablet. Each device needs power, but they might use different charging ports: USB-C, Lightning, or micro USB.
+Instead of carrying separate chargers for each device, you use adapters or cables that all connect to the same power source. Your power outlet (high level) doesn't care what specific device you're charging (low level details). It just provides electricity through a standard interface.
+
+>This is exactly what happened in Europe when they required Apple and other manufacturers to use USB-C. The focus was on the high-level need (charging devices) rather than forcing everyone to adapt to different proprietary charging systems. Now one charger works for most devices through a common standard.
+
+
+!["common standard"](/assets/img/commoncharger.png)
+
+### Example: Violating DIP
+Let's look at an email system that directly depends on a specific email service:
+
+!["Violating DIP Example"](/assets/img/ViolatingDIP.png)
+
+
+#### Problems with this approach
+
+- **_NotificationManager is tightly coupled to GmailService_**
+
+- **_Cannot switch to different email providers without changing code_**
+
+- **_Hard to test because Gmail dependency is hardcoded_**
+
+- **_Violates DIP because high-level module depends on low-level implementation_**
+
+
+### Example: Following DIP
+
+Here's how we can refactor this design to follow DIP using proper abstractions:
+
+!["Following DIP Example"](/assets/img/FollowingDIP.png)
+
+
+#### DIP Benefits and Architecture
+
+This refactored design demonstrates clean architecture and DIP compliance:
+
+- **_Loose Coupling: NotificationManager doesn't know which specific email service it uses_**
+
+- **_Flexibility: Easy to switch between different email providers_**
+
+- **_Testability: Can easily mock IEmailService for unit testing_**
+
+- **_Maintainability: Changes to email services don't affect the notification logic_**
+
+- **_Extensibility: New email services can be added without modifying existing code_**
+
+
+----
+
+## **Conclusion**
+
+>**SOLID represents five key design principles that guide developers in writing cleaner, more robust code. These principles focus on creating software that is easier to modify, test, and extend over time while reducing complexity and potential bugs.**
+
+
+!["Solide Summary "](/assets/img/SolideSummary.png)
